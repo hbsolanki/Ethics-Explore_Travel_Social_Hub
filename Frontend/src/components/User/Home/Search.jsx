@@ -58,26 +58,29 @@ function Search() {
         <div className="overflow-y-auto max-h-96">
           <ul className="space-y-2">
             {filteredData.length > 0 ? (
-              filteredData.map((user) => (
-                <li
-                  key={user.id}
+              filteredData.map((user, idx) => (
+                <a
+                  href={`/${user.username}`}
+                  key={idx}
                   className="flex items-center space-x-4 p-2 rounded hover:bg-gray-100 cursor-pointer"
                 >
-                  <img
-                    src={user.profile_picture}
-                    alt={`${user.username}'s profile`}
-                    className="w-10 h-10 rounded-full object-cover"
-                  />
-                  <div className="flex flex-col">
-                    <a
-                      href={`/${user.username}`}
-                      className="text-sm font-semibold text-gray-900 hover:underline"
-                    >
-                      {user.username}
-                    </a>
-                    <span className="text-sm text-gray-500">{user.name}</span>
-                  </div>
-                </li>
+                  <li
+                    key={idx}
+                    className="flex items-center space-x-4 p-2 rounded hover:bg-gray-100 cursor-pointer"
+                  >
+                    <img
+                      src={user.profile_picture}
+                      alt={`${user.username}'s profile`}
+                      className="w-10 h-10 rounded-full object-cover"
+                    />
+                    <div className="flex flex-col">
+                      <p className="text-sm font-semibold text-gray-900 hover:underline">
+                        {user.username}
+                      </p>
+                      <span className="text-sm text-gray-500">{user.name}</span>
+                    </div>
+                  </li>
+                </a>
               ))
             ) : (
               <p className="text-gray-500 text-center">No users found</p>

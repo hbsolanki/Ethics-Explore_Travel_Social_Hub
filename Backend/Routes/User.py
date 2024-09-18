@@ -167,11 +167,12 @@ async def user_following(request: Request):
         username=params["username"]
         following_username=params["following_username"]
         user=conn.Ethics.User.find_one({"username":username})
-        user["followings"].append((following_username))
-        conn.Ethics.User.update_one({"username":username},{"$set":{"followings":user["followings"]}})
-        # print(user["followings"])
         user_following=conn.Ethics.User.find_one({"username":following_username})
-        user_following["followers"].append(username)
+
+        user["followings"].append({"username":following_username,"name":user_following["name"],"pic":user_following["profile_picture"]})
+        user_following["followers"].append({"username":username,"name":user["name"],"pic":user["profile_picture"]})
+
+        conn.Ethics.User.update_one({"username":username},{"$set":{"followings":user["followings"]}})
         conn.Ethics.User.update_one({"username":following_username},{"$set":{"followers":user_following["followers"]}})
         return {"message": "Follow out successfully"}
     
@@ -186,19 +187,14 @@ async def user_following(request: Request):
         username=params["username"]
         following_username=params["following_username"]
         user=conn.Ethics.User.find_one({"username":username})
-        user["followings"].remove((following_username))
+        
         for trip in user["recent_activity"]:
             trip_db=conn.Ethics.Trip.find_one(trip)
             if trip_db["username"]==following_username:
                 user["recent_activity"].remove(trip)
 
-        conn.Ethics.User.update_one({"username":username},{"$set":{"followings":user["followings"],"recent_activity":user["recent_activity"]}})
 
-        # print(user["followings"])
-        user_following=conn.Ethics.User.find_one({"username":following_username})
-        user_following["followers"].remove(username)
-        print(user_following["followers"])
-        conn.Ethics.User.update_one({"username":following_username},{"$set":{"followers":user_following["followers"]}})
+        
         return {"message": "Follow out successfully"}
     
     except:

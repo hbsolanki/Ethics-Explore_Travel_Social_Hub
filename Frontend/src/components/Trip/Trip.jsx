@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 const Trip = () => {
   const { username, tripid } = useParams();
   const [tripData, setTripData] = useState({});
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function getData() {
@@ -15,13 +17,33 @@ const Trip = () => {
     getData();
   }, [username, tripid]);
 
+  const [TOKEN_USERNAME, setTOKEN_USERNAME] = useState("");
+
+  useEffect(() => {
+    async function getData() {
+      let token = localStorage.getItem("token");
+
+      if (token) {
+        try {
+          const decodedToken = jwtDecode(token);
+          const TOKENUSERNAME =
+            decodedToken.username || decodedToken.sub || decodedToken.email;
+          setTOKEN_USERNAME(TOKENUSERNAME);
+        } catch (error) {
+          alert(error);
+        }
+      }
+    }
+    getData();
+  }, [username, navigate]);
+
   return (
     <>
       {tripData ? (
         <section className="pb-10 pt-10 lg:pt-20 lg:pb-20 bg-gray-50">
           <div className="container mx-auto px-4">
             {/* Trip Information */}
-            <div className="max-w-4xl mx-auto mb-16 text-center">
+            <div className="max-w-4xl mx-auto mb-16 text-center relative">
               <a className="font-medium" href={`/${tripData.usermame}`}>
                 @{tripData.username}
               </a>
@@ -46,7 +68,17 @@ const Trip = () => {
                 )}
               </div>
               <p className="text-gray-600 mb-4">{tripData.discription}</p>
-              <p className="text-gray-600">Friends: {tripData.friends}</p>
+              <p className="text-gray-600 mb-4">Friends: {tripData.friends}</p>
+
+              {/* Delete Button at bottom right */}
+              <div className="absolute bottom-0 right-0">
+                {/* <p
+                  onClick={() => setShowModal(true)}
+                  className="px-4 py-2 bg-red-200 text-red-700 font-medium rounded-lg shadow hover:bg-red-300 transition duration-300"
+                >
+                  Delete Trip
+                </p> */}
+              </div>
             </div>
 
             {/* Photo Gallery */}

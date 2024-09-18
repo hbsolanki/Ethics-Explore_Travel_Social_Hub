@@ -42,7 +42,10 @@ def setup_destination(data: dict) -> dict:
 
 def create_notification(username: str, data: dict, trip_id: str) -> dict:
     """Create a notification structure when mentioning friends."""
-    destination_place = ", ".join(data["destination"])
+    destination_place = ""
+    for i in data["destination"]:
+        destination_place=destination_place+","+i
+    
     friends = data["friends"]
     notification = {
         "name": f"@{username} Mentioned in Their Trip",
@@ -92,9 +95,6 @@ async def user_newtrip(
     # Setup trip data
     trip_data = setup_destination(data)
     trip_data["username"] = username
-    trip_data["likes"] = 0
-    trip_data["comments"] = []
-
     # Upload photos to Cloudinary
     photo_filenames = []
     if photos:
@@ -129,4 +129,4 @@ async def user_newtrip(
             {"$set": {"recent_activity": follower_data["recent_activity"]}}
         )
 
-    return RedirectResponse(url=f"http://localhost:5173/hbsolanki/home", status_code=302)
+    return RedirectResponse(url=f"http://localhost:5173/{username}/home", status_code=302)

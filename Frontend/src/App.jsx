@@ -4,10 +4,11 @@ import PrivateRoute from "./components/Auth/PrivateRoute";
 import PublicRoute from "./components/Auth/PublicRoute";
 
 // Utils
-// import Header from "./components/Utils/Header";
-import Footer from "./components/Utils/Footer";
 import PageNotFound from "./components/Utils/PageNotFound";
 import Home from "./components/Utils/Home";
+import AboutUs from "./components/Utils/AboutUs";
+import ContactUs from "./components/Utils/ContactUs";
+import License from "./components/Utils/License";
 
 //User
 import Signin from "./components/User/SignIn";
@@ -20,9 +21,6 @@ import ProfileSetting from "./components/User/Profile/ProfileSetting";
 import NewTrip from "./components/Trip/NewTrip";
 import Trip from "./components/Trip/Trip";
 
-//Chat
-import Chat from "./components/Chat/Chat";
-
 //Search
 import Search from "./components/User/Home/Search";
 
@@ -32,11 +30,6 @@ import Following from "./components/User/Follow/Following";
 
 //notification
 import Notification from "./components/User/Home/Notification";
-
-//Utils
-import AboutUs from "./components/Utils/AboutUs";
-import ContactUs from "./components/Utils/ContactUs";
-import License from "./components/Utils/License";
 
 function App() {
   return (
@@ -61,14 +54,13 @@ function App() {
             <Route path="/:username/trip/:tripid" element={<Trip />} />
             <Route path="/:username/follower/list" element={<Follower />} />
             <Route path="/:username/following/list" element={<Following />} />
-            <Route path="/:username/chat" element={<Chat />} />
             <Route path="/:username/notification" element={<Notification />} />
           </Route>
 
           <Route path="/license" element={<License />} />
           <Route path="/aboutus" element={<AboutUs />} />
           <Route path="/contactus" element={<ContactUs />} />
-          <Route path="/pagenotfound" element={<PageNotFound />} />
+          {/* <Route path="/pagenotfound" element={<PageNotFound />} /> */}
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </Router>

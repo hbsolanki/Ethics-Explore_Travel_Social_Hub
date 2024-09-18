@@ -17,11 +17,11 @@ function User() {
   const [filteredData, setFilteredData] = useState([]);
   const [userIsValid, setUserIsValid] = useState(false);
   const [TOKEN_USERNAME, setTOKEN_USERNAME] = useState("");
+  const [isFollowing, setIsFollowing] = useState(false);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     async function getData() {
-      let token = localStorage.getItem("token");
-
       try {
         const response = await axios.get(`/API/${username}`, {
           headers: {
@@ -29,64 +29,88 @@ function User() {
           },
         });
         const user_data = response.data;
+        console.log(user_data);
         setUserData(user_data);
-      } catch (error) {
-        navigate("/pagenotfound");
-      }
 
-      if (token) {
-        try {
+        if (token) {
           const decodedToken = jwtDecode(token);
-          const TOKENUSERNAME =
+          const TOKEN_USERNAME =
             decodedToken.username || decodedToken.sub || decodedToken.email;
-          setTOKEN_USERNAME(TOKENUSERNAME);
-          setUserIsValid(TOKENUSERNAME === username);
-        } catch (error) {
-          <WentWrong />;
+          setTOKEN_USERNAME(TOKEN_USERNAME);
+          setUserIsValid(TOKEN_USERNAME === username);
+          console.log("Token", TOKEN_USERNAME);
+          console.log("Username", username);
+          // Check if user is already following
+          if (
+            user_data.followers.some(
+              (follower) => follower.follower_username === TOKEN_USERNAME
+            )
+          ) {
+            setIsFollowing(true);
+          }
         }
+      } catch (error) {
+        setError(true);
+        navigate("/pagenotfound");
       }
     }
     getData();
-  }, [username, navigate]);
+  }, [username, navigate, token]);
 
   const searchChangeHandler = (e) => {
     const searchWord = e.target.value;
     setWordEntered(searchWord);
-    const filter_data = userData["trips"].filter((value) => {
-      return value.Trip_Name.toLowerCase().includes(searchWord.toLowerCase());
-    });
-    setFilteredData(searchWord === "" ? userData["trips"] : filter_data);
+    if (userData) {
+      const filteredTrips = userData.trips.filter((trip) =>
+        trip.Trip_Name.toLowerCase().includes(searchWord.toLowerCase())
+      );
+      setFilteredData(searchWord ? filteredTrips : userData.trips);
+    }
   };
 
   const handleFollow = async () => {
     try {
-      if (TOKEN_USERNAME) {
-        await axios.get(`/API/${TOKEN_USERNAME}/following/${username}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        navigate(0);
-      }
+      await axios.get(`/API/${TOKEN_USERNAME}/following/${username}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setIsFollowing(true); // Update follow status
+      navigate(0);
     } catch (error) {
-      <WentWrong />;
+      setError(true);
     }
   };
 
   const handleUnfollow = async () => {
     try {
-      if (TOKEN_USERNAME) {
-        await axios.get(`/API/${TOKEN_USERNAME}/unfollow/${username}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        navigate(0);
-      }
+      await axios.get(`/API/${TOKEN_USERNAME}/unfollow/${username}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setIsFollowing(false); // Update follow status
+      navigate(0);
     } catch (error) {
-      <WentWrong />;
+      setError(true);
     }
   };
+
+  const checkingFollowed = () => {
+    console.log(userData);
+    if (TOKEN_USERNAME) {
+      let followerListForUsername = userData["followers"];
+      console.log(followerListForUsername);
+      followerListForUsername.map((val) => {
+        if (val.username === TOKEN_USERNAME) {
+          console.log("True");
+          return true;
+        }
+      });
+    }
+    return false;
+  };
+  if (error) return <WentWrong />;
 
   return (
     <div className="border border-gray-300 rounded-lg shadow-lg p-6 max-w-4xl mx-auto mt-8">
@@ -105,28 +129,24 @@ function User() {
                 </Link>
                 <Logout />
               </div>
-            ) : (
-              TOKEN_USERNAME && (
+            ) : checkingFollowed() ? (
+              <>
                 <button
-                  onClick={
-                    !userData.followers ||
-                    !userData.followers.includes(TOKEN_USERNAME)
-                      ? handleFollow
-                      : handleUnfollow
-                  }
-                  className={`py-2 px-4 rounded text-white font-semibold ${
-                    !userData.followers ||
-                    !userData.followers.includes(TOKEN_USERNAME)
-                      ? "bg-blue-600 hover:bg-blue-700"
-                      : "bg-red-600 hover:bg-red-700"
-                  }`}
+                  onClick={handleUnfollow}
+                  className="py-2 px-4 rounded text-white font-semibold bg-red-600 hover:bg-red-700"
                 >
-                  {!userData.followers ||
-                  !userData.followers.includes(TOKEN_USERNAME)
-                    ? "Follow"
-                    : "Unfollow"}
+                  Unfollow
                 </button>
-              )
+              </>
+            ) : (
+              <>
+                <button
+                  onClick={handleFollow}
+                  className="py-2 px-4 rounded text-white font-semibold bg-blue-600 hover:bg-blue-700"
+                >
+                  Follow
+                </button>
+              </>
             )}
           </div>
           <div className="mt-4 text-center">
@@ -141,10 +161,10 @@ function User() {
             </button>
           </div>
           <div className="grid grid-cols-1 gap-4 mt-6">
-            {(filteredData.length ? filteredData : userData["trips"])
+            {(filteredData.length ? filteredData : userData.trips)
               .reverse()
               .map((trip) => (
-                <Link to={`/${username}/trip/${trip["_id"]}`} key={trip["_id"]}>
+                <Link to={`/${username}/trip/${trip._id}`} key={trip._id}>
                   <ProfileTrip trip={trip} />
                 </Link>
               ))}

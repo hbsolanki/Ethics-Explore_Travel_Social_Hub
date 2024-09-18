@@ -30,7 +30,7 @@ function UserHome() {
 
           const user_data = response.data;
           setUserData(user_data);
-          setRecentActivity(user_data["recent_activity"]);
+          setRecentActivity(user_data["recent_activity"].filter());
         } catch (error) {
           return <WentWrong />;
         }
