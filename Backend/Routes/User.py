@@ -1,7 +1,6 @@
 from fastapi import APIRouter,Request,Form, Depends, HTTPException, status,File
 from fastapi.responses import RedirectResponse,JSONResponse,Response
 from Models.User import User
-import json
 from Config.db import conn  # [import-error]
 from bson import ObjectId
 
@@ -30,16 +29,28 @@ class UserRegistration(BaseModel):
 
 # Registration
 @UserRouter.post("/API/registration")
-async def user_registration(user_registration:User):
-    user_data=dict(user_registration)
-    user_data["profile_picture"]="https://res.cloudinary.com/ddm8umfu7/image/upload/v1725167390/profile_pictures/ipeyo0cpwxtjzlyyaehs.webp"
-    conn.Ethics.User.insert_one(user_data)
-    access_token_expires=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    access_token = create_access_token(
-        data={"sub": user_registration.username},
-        expires_delta=access_token_expires
-    )
-    return {"access_token": access_token, "token_type": "bearer"}
+async def user_registration(user_registration: UserRegistration):
+    user = conn.Ethics.User.find_one({"username": user_registration.username})
+
+    if not user:
+        user_data = dict(user_registration)
+        user_data["profile_picture"] = "https://res.cloudinary.com/ddm8umfu7/image/upload/v1726760053/Profile_picture_q4tcgj.webp"
+        conn.Ethics.User.insert_one(user_data)
+        
+        access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+        access_token = create_access_token(
+            data={"sub": user_registration.username},
+            expires_delta=access_token_expires
+        )
+        
+        return {"access_token": access_token, "token_type": "bearer"}
+    else:
+        return JSONResponse(
+            status_code=status.HTTP_400_BAD_REQUEST, 
+            content={"detail": "Username already exists!"}
+        )
+
+
 
 # Signin
 @UserRouter.post("/API/signin")
@@ -182,23 +193,33 @@ async def user_following(request: Request):
 #Remove Following 
 @UserRouter.get("/API/{username}/unfollow/{following_username}")
 async def user_following(request: Request):
-    try:
-        params=request.path_params
-        username=params["username"]
-        following_username=params["following_username"]
-        user=conn.Ethics.User.find_one({"username":username})
-        
-        for trip in user["recent_activity"]:
-            trip_db=conn.Ethics.Trip.find_one(trip)
-            if trip_db["username"]==following_username:
-                user["recent_activity"].remove(trip)
-
-
-        
-        return {"message": "Follow out successfully"}
+    # try:
+    params=request.path_params
+    username=params["username"]
+    following_username=params["following_username"]
+    user=conn.Ethics.User.find_one({"username":username})
+    following_user=conn.Ethics.User.find_one({"username":following_username})
     
-    except:
-        return HTTPException(status_code=404, detail="User Not Found")
+    for trip in user["recent_activity"]:
+        trip_db=conn.Ethics.Trip.find_one(trip)
+        if trip_db["username"]==following_username:
+            user["recent_activity"].remove(trip)
+
+    for following in user["followings"]:
+        if following["username"]==following_username:
+            user["followings"].remove(following)
+
+    for follower in following_user["followers"]:
+        if follower["username"]==username:
+            following_user["followers"].remove(follower)
+    
+    conn.Ethics.User.update_one({"username":username},{"$set":{"followings":user["followings"]}})
+    conn.Ethics.User.update_one({"username":following_username},{"$set":{"followers":following_user["followers"]}})
+    
+    return {"message": "Follow out successfully"}
+    
+    # except:
+    #     return HTTPException(status_code=404, detail="User Not Found")
 
 
 
@@ -231,7 +252,6 @@ async def user_recent_activity(request:Request):
     for i in user_data["notification"]:
         i["trip_id"]=str(i["trip_id"])
         notification.append(i)
-    # print(user_data["notification"])
     return notification
 
 @UserRouter.get("/API/{username}/notification/accept/{tripid}")

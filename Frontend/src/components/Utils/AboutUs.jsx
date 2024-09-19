@@ -1,5 +1,6 @@
 import IMG1 from "../../assets/AboutUs/IMAGE1.jpg";
 import IMG2 from "../../assets/AboutUs/IMAGE2.jpeg";
+import IMG3 from "../../assets/AboutUs/IMAGE3.jpeg";
 import Footer from "./Footer";
 const AboutUs = () => {
   return (
@@ -19,11 +20,7 @@ const AboutUs = () => {
                 </div>
                 <div className="w-full px-3 sm:px-4 xl:w-1/2">
                   <div className="relative z-10 my-4">
-                    {/* <img
-                      src="https://i.ibb.co/9y7nYCD/image-3.jpg"
-                      alt=""
-                      className="w-full rounded-2xl"
-                    /> */}
+                    <img src={IMG3} alt="" className="w-full rounded-2xl" />
                     <span className="absolute -right-7 -bottom-7 z-[-1]">
                       <svg
                         width={134}
@@ -604,7 +601,7 @@ const AboutUs = () => {
                 <span className="block mb-4 text-lg font-semibold text-primary">
                   Hardik Solanki
                 </span>
-                <h2 className="mb-5 text-3xl font-bold text-dark dark:text-orange-500 sm:text-[40px]/[48px]">
+                <h2 className="mb-5 text-3xl font-bold text-dark dark:text-red-500 sm:text-[40px]/[48px]">
                   <p>Computer Engineer</p>
                 </h2>
                 <p className="mb-5 text-base text-body-color dark:text-dark-6">
@@ -624,7 +621,7 @@ const AboutUs = () => {
                 </p>
                 <a
                   href="https://www.linkedin.com/in/hbsolanki/"
-                  className="inline-flex items-center justify-center py-3 text-base font-medium text-center text-orange-500 border border-transparent rounded-md px-7 bg-primary hover:bg-opacity-90"
+                  className="inline-flex items-center justify-center py-3 text-base font-medium text-center text-red-500 border border-transparent rounded-md px-7 bg-primary hover:bg-opacity-90"
                 >
                   LinkedIn{"  "}
                   <svg

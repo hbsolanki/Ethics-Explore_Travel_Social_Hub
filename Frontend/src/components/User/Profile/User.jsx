@@ -29,7 +29,6 @@ function User() {
           },
         });
         const user_data = response.data;
-        console.log(user_data);
         setUserData(user_data);
 
         if (token) {
@@ -38,8 +37,6 @@ function User() {
             decodedToken.username || decodedToken.sub || decodedToken.email;
           setTOKEN_USERNAME(TOKEN_USERNAME);
           setUserIsValid(TOKEN_USERNAME === username);
-          console.log("Token", TOKEN_USERNAME);
-          console.log("Username", username);
           // Check if user is already following
           if (
             user_data.followers.some(
@@ -97,19 +94,34 @@ function User() {
   };
 
   const checkingFollowed = () => {
-    console.log(userData);
     if (TOKEN_USERNAME) {
-      let followerListForUsername = userData["followers"];
-      console.log(followerListForUsername);
-      followerListForUsername.map((val) => {
-        if (val.username === TOKEN_USERNAME) {
-          console.log("True");
-          return true;
-        }
-      });
+      const followerListForUsername = userData["followers"];
+
+      const isFollowing = followerListForUsername.some(
+        (val) => val.username === TOKEN_USERNAME
+      );
+
+      return isFollowing ? (
+        <button
+          onClick={handleUnfollow}
+          className="py-2 px-4 rounded text-white font-semibold bg-red-600 hover:bg-red-700"
+        >
+          Unfollow
+        </button>
+      ) : (
+        <button
+          onClick={handleFollow}
+          className="py-2 px-4 rounded text-white font-semibold bg-blue-600 hover:bg-blue-700"
+        >
+          Follow
+        </button>
+      );
     }
-    return false;
+
+    // If TOKEN_USERNAME is not present, you can return null or any other fallback UI
+    return null;
   };
+
   if (error) return <WentWrong />;
 
   return (
@@ -129,24 +141,8 @@ function User() {
                 </Link>
                 <Logout />
               </div>
-            ) : checkingFollowed() ? (
-              <>
-                <button
-                  onClick={handleUnfollow}
-                  className="py-2 px-4 rounded text-white font-semibold bg-red-600 hover:bg-red-700"
-                >
-                  Unfollow
-                </button>
-              </>
             ) : (
-              <>
-                <button
-                  onClick={handleFollow}
-                  className="py-2 px-4 rounded text-white font-semibold bg-blue-600 hover:bg-blue-700"
-                >
-                  Follow
-                </button>
-              </>
+              checkingFollowed()
             )}
           </div>
           <div className="mt-4 text-center">
@@ -156,7 +152,7 @@ function User() {
               placeholder="Search trips..."
               className="border border-gray-300 rounded py-2 px-4 w-3/4 focus:outline-none focus:ring-2 focus:ring-indigo-400"
             />
-            <button className="ml-2 bg-gray-800 text-white py-2 px-4 rounded hover:bg-gray-900">
+            <button className="ml-2 bg-gray-800 text-white py-2 px-4 rounded hover:bg-gray-900 m-">
               Search Trip
             </button>
           </div>

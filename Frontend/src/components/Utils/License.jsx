@@ -70,7 +70,7 @@ export default function License() {
               href="mailto:support@ethicshub.com"
               className="text-blue-500 hover:underline"
             >
-              support@ethicshub.com
+              hbsolanki0524@gmail.com
             </a>
             .
           </Typography>
