@@ -35,6 +35,14 @@ async def user_registration(user_registration: UserRegistration):
     if not user:
         user_data = dict(user_registration)
         user_data["profile_picture"] = "https://res.cloudinary.com/ddm8umfu7/image/upload/v1726760053/Profile_picture_q4tcgj.webp"
+        user_data["notification"]=[]
+        user_data["trips"]=[]
+        user_data["followings"]=[]
+        user_data["followers"]=[]
+        user_data["recent_activity"]=[]
+        user_data["bio"]=""
+        user_data["website"]=""
+
         conn.Ethics.User.insert_one(user_data)
         
         access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
@@ -89,7 +97,8 @@ async def user_data(request:Request):
         return JSONResponse(user_data)
     except :
         raise HTTPException(status_code=404, detail="User Not Found")
-
+    \
+    
 
 #Get Trip
 async def get_tripdata(id):

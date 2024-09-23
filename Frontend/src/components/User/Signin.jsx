@@ -20,7 +20,6 @@ function Signin() {
       const accessToken = response.data.access_token;
       localStorage.setItem("token", accessToken);
 
-      // <CustomAlert message={"Welcome back! You've successfully signed in."} />;
       navigate(`/${formData.username}/home`);
     } catch (err) {
       alert("Invalid username or password");

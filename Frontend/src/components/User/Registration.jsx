@@ -8,12 +8,11 @@ export default function Registration() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({});
   const [errors, setErrors] = useState({});
-  const [alert, setAlert] = useState(null); // For showing alert messages
+  const [alert, setAlert] = useState(null);
 
   const validateForm = () => {
     const newErrors = {};
 
-    // Username validation (min 4 chars, only alphanumeric)
     if (!formData.username || formData.username.length < 4) {
       newErrors.username = "Username must be at least 4 characters long.";
     } else if (!/^[a-zA-Z0-9_]+$/.test(formData.username)) {
@@ -21,7 +20,6 @@ export default function Registration() {
         "Username can only contain alphanumeric characters and underscores.";
     }
 
-    // Password validation (min 6 chars)
     if (!formData.password || formData.password.length < 6) {
       newErrors.password = "Password must be at least 6 characters long.";
     }
@@ -51,7 +49,7 @@ export default function Registration() {
       }
     } catch (err) {
       if (err.response && err.response.status === 400) {
-        setAlert("Username already exists!"); // Show alert if username exists
+        setAlert("Username already exists!");
       } else {
         setAlert("Username already exists!");
         console.error(err.message);
@@ -71,7 +69,6 @@ export default function Registration() {
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           {alert && <CustomAlert message={alert} type="error" />}{" "}
-          {/* Alert component */}
           <form className="space-y-6" onSubmit={handleSubmit} method="post">
             <div>
               <label

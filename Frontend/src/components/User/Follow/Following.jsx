@@ -18,11 +18,6 @@ function Following() {
   return (
     <>
       <div className="max-w-md mx-auto mt-8 p-4 bg-white rounded-lg shadow-md">
-        {/* {userData["followings"]
-        ? userData["followings"].map((following, idx) => (
-            <p key={idx}>{following}</p>
-          ))
-        : ""} */}
         <h2 className="text-xl font-semibold mb-4">Followings</h2>
         {userData["followings"] ? (
           <ul className="space-y-4">

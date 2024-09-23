@@ -37,7 +37,6 @@ function User() {
             decodedToken.username || decodedToken.sub || decodedToken.email;
           setTOKEN_USERNAME(TOKEN_USERNAME);
           setUserIsValid(TOKEN_USERNAME === username);
-          // Check if user is already following
           if (
             user_data.followers.some(
               (follower) => follower.follower_username === TOKEN_USERNAME
@@ -117,8 +116,6 @@ function User() {
         </button>
       );
     }
-
-    // If TOKEN_USERNAME is not present, you can return null or any other fallback UI
     return null;
   };
 

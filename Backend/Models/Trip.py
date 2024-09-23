@@ -10,5 +10,4 @@ class Trip(BaseModel):
     friends:str=""
     date:str=""
     photos:list=[]
-    likes:int=0
-    comments:list=[]
+    

@@ -122,10 +122,12 @@ async def user_newtrip(
 
     # Notify followers about the new trip
     for follower in user_data["followers"]:
-        follower_data = conn.Ethics.User.find_one({"username": follower})
+        print(follower)
+        print(follower["username"])
+        follower_data = conn.Ethics.User.find_one({"username": follower["username"]})
         follower_data["recent_activity"].append(trip_id)
         conn.Ethics.User.find_one_and_update(
-            {"username": follower},
+            {"username": follower["username"]},
             {"$set": {"recent_activity": follower_data["recent_activity"]}}
         )
 

@@ -30,7 +30,8 @@ function UserHome() {
 
           const user_data = response.data;
           setUserData(user_data);
-          setRecentActivity(user_data["recent_activity"].filter());
+
+          setRecentActivity(user_data["recent_activity"]);
         } catch (error) {
           return <WentWrong />;
         }
@@ -63,7 +64,7 @@ function UserHome() {
             {/* Main Content */}
             <div className="part-Main p-4 border border-gray-200 w-full md:w-4/5 align-center">
               {recentActivity.length > 0 ? (
-                recentActivity.map((activity) => (
+                recentActivity.reverse().map((activity) => (
                   <Link
                     to={`/${activity.username}/trip/${activity["_id"]}`}
                     key={activity["_id"]}

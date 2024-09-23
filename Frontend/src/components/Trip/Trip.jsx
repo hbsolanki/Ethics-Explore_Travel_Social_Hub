@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 
 const Trip = () => {
@@ -42,11 +42,10 @@ const Trip = () => {
       {tripData ? (
         <section className="pb-10 pt-10 lg:pt-20 lg:pb-20 bg-gray-50">
           <div className="container mx-auto px-4">
-            {/* Trip Information */}
             <div className="max-w-4xl mx-auto mb-16 text-center relative">
-              <a className="font-medium" href={`/${tripData.usermame}`}>
+              <Link className="font-medium" to={`/${tripData.username}`}>
                 @{tripData.username}
-              </a>
+              </Link>
               <h2 className="text-4xl font-bold text-gray-800 mb-4">
                 {tripData.Trip_Name}
               </h2>
@@ -68,20 +67,17 @@ const Trip = () => {
                 )}
               </div>
               <p className="text-gray-600 mb-4">{tripData.discription}</p>
-              <p className="text-gray-600 mb-4">Friends: {tripData.friends}</p>
+              {tripData.friends ? (
+                <p className="text-gray-600 mb-4">
+                  Friends: {tripData.friends}
+                </p>
+              ) : (
+                ""
+              )}
 
-              {/* Delete Button at bottom right */}
-              <div className="absolute bottom-0 right-0">
-                {/* <p
-                  onClick={() => setShowModal(true)}
-                  className="px-4 py-2 bg-red-200 text-red-700 font-medium rounded-lg shadow hover:bg-red-300 transition duration-300"
-                >
-                  Delete Trip
-                </p> */}
-              </div>
+              <div className="absolute bottom-0 right-0"></div>
             </div>
 
-            {/* Photo Gallery */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               {tripData.photos
                 ? tripData.photos.map((link, idx) => (
