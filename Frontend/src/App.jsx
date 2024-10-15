@@ -11,7 +11,7 @@ import ContactUs from "./components/Utils/ContactUs";
 import License from "./components/Utils/License";
 
 //User
-import Signin from "./components/User/SignIn";
+import Signin from "./components/User/Signin";
 import Registration from "./components/User/Registration";
 import UserHome from "./components/User/Home/UserHome";
 import User from "./components/User/Profile/User";
