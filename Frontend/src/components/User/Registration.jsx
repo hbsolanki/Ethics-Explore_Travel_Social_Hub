@@ -41,7 +41,7 @@ export default function Registration() {
     }
 
     try {
-      const response = await axios.post("/API/registration", formData);
+      const response = await axios.post("https://ethics-explore-travel-social-hub.onrender.com/API/registration", formData);
       if (response.data.access_token) {
         const accessToken = response.data.access_token;
         localStorage.setItem("token", accessToken);
