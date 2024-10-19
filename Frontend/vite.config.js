@@ -8,8 +8,6 @@ export default defineConfig({
       "/API": {
         target:
           "https://ethics-explore-travel-social-hub-backend.onrender.com/",
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/API/, ""), // Remove /API from the path
       },
     },
   },

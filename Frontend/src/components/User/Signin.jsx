@@ -17,7 +17,7 @@ function Signin() {
   const handelSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${Backend}/API/signin`, formData);
+      const response = await axios.post(`/API/signin`, formData);
       const accessToken = response.data.access_token;
       localStorage.setItem("token", accessToken);
 
