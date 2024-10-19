@@ -3,7 +3,7 @@ from fastapi import FastAPI
 
 from Routes.User import UserRouter
 from fastapi.middleware.cors import CORSMiddleware
-
+from fastapi.responses import RedirectResponse,JSONResponse,Response
 from Routes.Trip import TripRouter
 
 app=FastAPI()
@@ -20,4 +20,3 @@ app.add_middleware(
 
 app.include_router(UserRouter)
 app.include_router(TripRouter)
-

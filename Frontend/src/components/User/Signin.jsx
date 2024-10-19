@@ -2,7 +2,8 @@ import { useState } from "react";
 import Logo from "../../assets/Ethics_Logo.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import CustomAlert from "../Alert/CustomAlert";
+import { getGlobalVariable } from "../../globalVariables";
+const Backend = getGlobalVariable();
 
 function Signin() {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ function Signin() {
   const handelSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("/API/signin", formData);
+      const response = await axios.post(`${Backend}/API/signin`, formData);
       const accessToken = response.data.access_token;
       localStorage.setItem("token", accessToken);
 

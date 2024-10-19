@@ -5,7 +5,12 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   server: {
     proxy: {
-      "/API": "https://ethics-explore-travel-social-hub-backend.onrender.com/",
+      "/API": {
+        target:
+          "https://ethics-explore-travel-social-hub-backend.onrender.com/",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/API/, ""), // Remove /API from the path
+      },
     },
   },
   plugins: [react()],

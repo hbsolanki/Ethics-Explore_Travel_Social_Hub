@@ -27,6 +27,11 @@ class UserRegistration(BaseModel):
     email: EmailStr
     password: str
 
+
+@UserRouter.get("/")
+def home(request: Request):
+    return Response("Root")
+
 # Registration
 @UserRouter.post("/API/registration")
 async def user_registration(user_registration: UserRegistration):
