@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { getGlobalVariable } from "../../globalVariables";
+const Backend = getGlobalVariable();
 
 function Notification() {
   const { username } = useParams();
@@ -18,7 +20,7 @@ function Notification() {
             decodedToken.username || decodedToken.sub || decodedToken.email;
 
           const response = await axios.get(
-            `/API/${TOKENUSERNAME}/notification`,
+            `${Backend}/API/${TOKENUSERNAME}/notification`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -37,7 +39,9 @@ function Notification() {
 
   const handelAccept = async (trip_id) => {
     try {
-      await axios.get(`/API/${username}/notification/accept/${trip_id}`);
+      await axios.get(
+        `${Backend}/API/${username}/notification/accept/${trip_id}`
+      );
       navigate(0);
     } catch (error) {
       alert(error);
@@ -46,7 +50,9 @@ function Notification() {
 
   const handelReject = async (trip_id) => {
     try {
-      await axios.get(`/API/${username}/notification/reject/${trip_id}`);
+      await axios.get(
+        `${Backend}/API/${username}/notification/reject/${trip_id}`
+      );
       navigate(0);
     } catch (error) {
       alert(error);
@@ -55,7 +61,9 @@ function Notification() {
 
   const handelRemove = async (trip_id) => {
     try {
-      await axios.get(`/API/${username}/notification/remove/${trip_id}`);
+      await axios.get(
+        `${Backend}/API/${username}/notification/remove/${trip_id}`
+      );
       navigate(0);
     } catch (error) {
       alert(error);

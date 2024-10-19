@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import Logo from "../../../assets/Ethics_Logo.png";
-
+import { getGlobalVariable } from "../../globalVariables";
+const Backend = getGlobalVariable();
 export default function ProfileSetting() {
   const { username } = useParams();
   const [userData, setUserData] = useState({});
@@ -15,7 +16,7 @@ export default function ProfileSetting() {
   };
   useEffect(() => {
     async function getData() {
-      const user_data = (await axios.get(`/API/${username}`)).data;
+      const user_data = (await axios.get(`${Backend}/API/${username}`)).data;
       setUserData(user_data);
     }
     getData();

@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import { getGlobalVariable } from "../../globalVariables";
+const Backend = getGlobalVariable();
 
 const Trip = () => {
   const { username, tripid } = useParams();
@@ -10,8 +12,9 @@ const Trip = () => {
 
   useEffect(() => {
     async function getData() {
-      const tripData = (await axios.get(`/API/${username}/trip/${tripid}`))
-        .data;
+      const tripData = (
+        await axios.get(`${Backend}/API/${username}/trip/${tripid}`)
+      ).data;
       setTripData(tripData);
     }
     getData();

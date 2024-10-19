@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import {
   Dialog,
@@ -9,6 +8,8 @@ import {
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { getGlobalVariable } from "../../globalVariables";
+const Backend = getGlobalVariable();
 
 export default function Logout() {
   const [open, setOpen] = useState(true);
@@ -17,7 +18,7 @@ export default function Logout() {
 
   const handleLogout = async () => {
     try {
-      await axios.post("/API/logout", null, {
+      await axios.post(`${Backend}/API/logout`, null, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("access_token")}`,
         },

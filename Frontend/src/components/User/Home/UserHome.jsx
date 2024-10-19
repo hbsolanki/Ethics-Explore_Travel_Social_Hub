@@ -5,6 +5,8 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { Link } from "react-router-dom";
 import WentWrong from "../../Alert/WentWrong";
+import { getGlobalVariable } from "../../globalVariables";
+const Backend = getGlobalVariable();
 
 function UserHome() {
   const [recentActivity, setRecentActivity] = useState([]);
@@ -22,7 +24,7 @@ function UserHome() {
 
           setTOKEN_USERNAME(TOKENUSERNAME);
 
-          const response = await axios.get(`/API/${TOKENUSERNAME}`, {
+          const response = await axios.get(`${Backend}/API/${TOKENUSERNAME}`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },

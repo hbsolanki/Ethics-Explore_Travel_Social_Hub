@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import Logo from "../../assets/Ethics_Logo.png";
+import { getGlobalVariable } from "../../globalVariables";
+const Backend = getGlobalVariable();
 
 export default function NewTrip() {
   const { username } = useParams();
@@ -42,7 +44,7 @@ export default function NewTrip() {
           <form
             className="space-y-6"
             encType="multipart/form-data"
-            action={`http://127.0.0.1:8000/API/${username}/newtrip`}
+            action={`${Backend}/API/${username}/newtrip`}
             method="post"
           >
             <div>

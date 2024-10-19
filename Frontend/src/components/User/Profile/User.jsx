@@ -7,6 +7,8 @@ import WentWrong from "../../Alert/WentWrong";
 import { jwtDecode } from "jwt-decode";
 import Breadcrumbs from "./Breadcrumbs";
 import Logout from "./Logout";
+import { getGlobalVariable } from "../../globalVariables";
+const Backend = getGlobalVariable();
 
 function User() {
   const token = localStorage.getItem("token");
@@ -23,7 +25,7 @@ function User() {
   useEffect(() => {
     async function getData() {
       try {
-        const response = await axios.get(`/API/${username}`, {
+        const response = await axios.get(`${Backend}/API/${username}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -66,11 +68,14 @@ function User() {
 
   const handleFollow = async () => {
     try {
-      await axios.get(`/API/${TOKEN_USERNAME}/following/${username}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      await axios.get(
+        `${Backend}/API/${TOKEN_USERNAME}/following/${username}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       setIsFollowing(true); // Update follow status
       navigate(0);
     } catch (error) {
@@ -80,7 +85,7 @@ function User() {
 
   const handleUnfollow = async () => {
     try {
-      await axios.get(`/API/${TOKEN_USERNAME}/unfollow/${username}`, {
+      await axios.get(`${Backend}/API/${TOKEN_USERNAME}/unfollow/${username}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

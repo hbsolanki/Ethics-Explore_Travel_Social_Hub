@@ -3,6 +3,8 @@ import Logo from "../../assets/Ethics_Logo.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import CustomAlert from "../Alert/CustomAlert";
+import { getGlobalVariable } from "../../globalVariables";
+const Backend = getGlobalVariable();
 
 export default function Registration() {
   const navigate = useNavigate();
@@ -41,7 +43,10 @@ export default function Registration() {
     }
 
     try {
-      const response = await axios.post("https://ethics-explore-travel-social-hub.onrender.com/API/registration", formData);
+      const response = await axios.post(
+        `${Backend}/API/registration`,
+        formData
+      );
       if (response.data.access_token) {
         const accessToken = response.data.access_token;
         localStorage.setItem("token", accessToken);

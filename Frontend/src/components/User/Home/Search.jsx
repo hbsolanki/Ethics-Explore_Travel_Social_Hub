@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { getGlobalVariable } from "../../globalVariables";
+const Backend = getGlobalVariable();
 
 function Search() {
   const [allUser, setAllUser] = useState([]);
@@ -13,11 +15,14 @@ function Search() {
       const token = localStorage.getItem("token");
       if (token) {
         try {
-          const response = await axios.get(`/API/${username}/search/alluser`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
+          const response = await axios.get(
+            `${Backend}/API/${username}/search/alluser`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
           const user_data = response.data; // Extract data from the response
           setAllUser(user_data); // Log or process the data
         } catch (error) {
