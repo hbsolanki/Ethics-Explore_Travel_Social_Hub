@@ -5,10 +5,7 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   server: {
     proxy: {
-      "/API": {
-        target:
-          "https://ethics-explore-travel-social-hub-backend.onrender.com/",
-      },
+      "/API": "https://ethics-explore-travel-social-hub.onrender.com/",
     },
   },
   plugins: [react()],
