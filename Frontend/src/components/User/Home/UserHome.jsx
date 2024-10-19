@@ -63,7 +63,7 @@ function UserHome() {
 
             {/* Main Content */}
             <div className="part-Main p-4 border border-gray-200 w-full md:w-4/5 align-center">
-              {recentActivity.length > 0 ? (
+              {recentActivity && recentActivity.length > 0 ? (
                 recentActivity.reverse().map((activity) => (
                   <Link
                     to={`/${activity.username}/trip/${activity["_id"]}`}

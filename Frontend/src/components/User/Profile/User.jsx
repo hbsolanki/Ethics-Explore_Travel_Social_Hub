@@ -47,7 +47,7 @@ function User() {
         }
       } catch (error) {
         setError(true);
-        navigate("/pagenotfound");
+        // navigate("/pagenotfound");
       }
     }
     getData();
