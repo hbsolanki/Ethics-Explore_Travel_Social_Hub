@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import Logo from "../../../assets/Ethics_Logo.png";
-import { getGlobalVariable } from "../../globalVariables";
+import { getGlobalVariable } from "../../../globalVariables";
 const Backend = getGlobalVariable();
 export default function ProfileSetting() {
   const { username } = useParams();

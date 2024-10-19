@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { getGlobalVariable } from "../../globalVariables";
+import { getGlobalVariable } from "../../../globalVariables";
 const Backend = getGlobalVariable();
 
 function Notification() {

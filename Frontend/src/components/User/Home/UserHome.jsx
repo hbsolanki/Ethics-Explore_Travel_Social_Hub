@@ -5,7 +5,7 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { Link } from "react-router-dom";
 import WentWrong from "../../Alert/WentWrong";
-import { getGlobalVariable } from "../../globalVariables";
+import { getGlobalVariable } from "../../../globalVariables";
 const Backend = getGlobalVariable();
 
 function UserHome() {

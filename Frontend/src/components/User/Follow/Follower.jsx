@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { getGlobalVariable } from "../../../globalVariables";
+const Backend = getGlobalVariable();
 
 function Follower() {
   const { username } = useParams();
@@ -8,7 +10,7 @@ function Follower() {
 
   useEffect(() => {
     async function getData() {
-      const user_data = (await axios.get(`/API/${username}`)).data;
+      const user_data = (await axios.get(`${Backend}/API/${username}`)).data;
 
       setUserData(user_data);
     }

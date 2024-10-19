@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { getGlobalVariable } from "../../globalVariables";
+import { getGlobalVariable } from "../../../globalVariables";
 const Backend = getGlobalVariable();
 
 function Search() {

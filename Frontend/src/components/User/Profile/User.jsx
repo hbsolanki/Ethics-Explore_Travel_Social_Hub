@@ -7,7 +7,7 @@ import WentWrong from "../../Alert/WentWrong";
 import { jwtDecode } from "jwt-decode";
 import Breadcrumbs from "./Breadcrumbs";
 import Logout from "./Logout";
-import { getGlobalVariable } from "../../globalVariables";
+import { getGlobalVariable } from "../../../globalVariables";
 const Backend = getGlobalVariable();
 
 function User() {
